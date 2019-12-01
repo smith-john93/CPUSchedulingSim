@@ -11,7 +11,7 @@ namespace CPUSchedulingSim
 
         }
         
-        public string Name { get; set; }
+        public int ProcessId { get; set; }
 
         public int Priority { get; set; }
 
@@ -20,5 +20,9 @@ namespace CPUSchedulingSim
         public int BurstTime { get; set; }
 
         public int WaitTime { get; set; }
+
+        public int RemainingTime { get; set; }
+
+        public int lastProcess { get; set; }
     }
 }
