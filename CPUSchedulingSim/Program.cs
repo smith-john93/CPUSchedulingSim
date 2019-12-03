@@ -146,7 +146,7 @@ namespace CPUSchedulingSim
             List<ProcessDTO> processList = new List<ProcessDTO>();
 
             //seed with total seconds
-            Random rand = new Random(DateTime.Now.Second);
+            Random rand = new Random(DateTime.Now.Millisecond);
 
             //Set the total number of processes
             int totalProcesses = rand.Next(10, 20);
@@ -211,7 +211,7 @@ namespace CPUSchedulingSim
             for (int i = 0; i < runCount; i++)
             {
                 List<ProcessDTO> processList = GenerateList();
-
+                
                 foreach (KeyValuePair<SchedulingAlgorithms, List<double>> kvPair in processDict)
                 {
                     switch (kvPair.Key)
@@ -222,7 +222,7 @@ namespace CPUSchedulingSim
                             kvPair.Value.Add(firstCome.GetAvgWait());              
                             
                             // this sleep needs to be here to ensure the add completes properly
-                            Thread.Sleep(10); 
+                            Thread.Sleep(1); 
                             break;
 
                         case SchedulingAlgorithms.RR:
@@ -231,13 +231,14 @@ namespace CPUSchedulingSim
                             kvPair.Value.Add(robin.GetAvgWait());
                             
                             // this sleep needs to be here to ensure the add completes properly
-                            Thread.Sleep(10); 
+                            Thread.Sleep(1); 
                             break;
 
                         default:
                             break;
                     }
                 }
+                processList.Clear();
             }
             Console.WriteLine("Completed Running Algorithms");
 
