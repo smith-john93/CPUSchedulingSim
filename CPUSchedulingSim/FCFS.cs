@@ -45,7 +45,7 @@ namespace CPUSchedulingSim
             //calculate the averate wait time
             foreach (ProcessDTO process in processList)
                 AvgWait += process.WaitTime;
-            AvgWait = AvgWait / processList.Count;
+            AvgWait /= processList.Count;
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace CPUSchedulingSim
         public void PrintResults()
         {
             Console.WriteLine("First Come First Serve Results");
-            Console.WriteLine("Id\tPriorit y\tArrivalTime\tBurstTime\tWaitTime");
+            Console.WriteLine("Id\tPriority\tArrivalTime\tBurstTime\tWaitTime");
             for (int i = 0; i < 64; i++)
                 Console.Write('-');
             Console.WriteLine();
