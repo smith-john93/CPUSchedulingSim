@@ -1,33 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 using System.Threading;
 
 namespace CPUSchedulingSim
 {
     public class FCFS
     {
-        IList<ProcessDTO> Results;
+        List<ProcessDTO> processList;
         private double AvgWait = 0;
         private int TotalExec = 0;
 
-        public FCFS(List<ProcessDTO> ProcessList)
+        public FCFS(List<ProcessDTO> list)
         {
             //Initialize the list of processes
-            Results = new List<ProcessDTO>();
+            processList = new List<ProcessDTO>();
 
             //Populate the queue out of the List passed to the class
-            foreach(ProcessDTO process in ProcessList)
+            foreach(ProcessDTO process in list)
             {
-                Results.Add(process);
+                processList.Add(process);
             }
 
         }
 
+        /// <summary>
+        /// Runs the scheduling algorithm
+        /// </summary>
         public void Run()
         {
+            foreach (ProcessDTO process in processList)
+                process.WaitTime = 0;
+
             TotalExec = 0;
-            foreach(ProcessDTO process in Results)
+            foreach(ProcessDTO process in processList)
             {
                 //set the wait time of the process before being executed
                 process.WaitTime = TotalExec;
@@ -37,19 +43,23 @@ namespace CPUSchedulingSim
             }
 
             //calculate the averate wait time
-            foreach (ProcessDTO process in Results)
+            foreach (ProcessDTO process in processList)
                 AvgWait += process.WaitTime;
-            AvgWait = AvgWait / Results.Count;
+            AvgWait = AvgWait / processList.Count;
         }
 
+        /// <summary>
+        /// Prints the informaiton of each process and stats
+        /// </summary>
         public void PrintResults()
         {
-            Console.WriteLine("Id\tPriority\tArrivalTime\tBurstTime\tWaitTime");
+            Console.WriteLine("First Come First Serve Results");
+            Console.WriteLine("Id\tPriorit y\tArrivalTime\tBurstTime\tWaitTime");
             for (int i = 0; i < 64; i++)
                 Console.Write('-');
             Console.WriteLine();
 
-            foreach(ProcessDTO process in Results)
+            foreach(ProcessDTO process in processList)
             {
                 Console.WriteLine($"{process.ProcessId}\t{process.Priority}\t\t{process.ArrivalTime}\t\t{process.BurstTime}\t\t{process.WaitTime}");
             }
@@ -59,7 +69,7 @@ namespace CPUSchedulingSim
 
             //Print the total wait time
             //Use the total execution time, subtract the burst time of the last process
-            Console.WriteLine($"Total Wait Time {TotalExec - Results[Results.Count - 1].BurstTime}");
+            Console.WriteLine($"Total Wait Time {TotalExec - processList[processList.Count - 1].BurstTime}");
 
             //print the total execution time
             Console.WriteLine($"Total Execution Time: {TotalExec }");
