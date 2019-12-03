@@ -9,7 +9,6 @@ namespace CPUSchedulingSim
     public class Program
     {
         private const string COMP_FILE= "ComparisonResults.txt";
-        public static bool inExecute = false;
         public static void Main()
         {
             
@@ -28,9 +27,6 @@ namespace CPUSchedulingSim
 
                 //execut the request
                 ExecuteRequest(option);
-
-                while (inExecute)
-                    continue;
 
                 //determine if the program should continue executing
                 runAgain = GetRunAgain(false);
@@ -86,7 +82,6 @@ namespace CPUSchedulingSim
         /// <param name="SelectedOption"></param>
         private static void ExecuteRequest(int SelectedOption)
         {
-            inExecute = true;
             switch (SelectedOption)
             {
                 case (int)ExecutionOption.Single:
@@ -98,7 +93,6 @@ namespace CPUSchedulingSim
                 default:
                     break;
             }
-            inExecute = false;
         }
 
         /// <summary>
@@ -228,16 +222,18 @@ namespace CPUSchedulingSim
                             kvPair.Value.Add(firstCome.GetAvgWait());              
                             
                             // this sleep needs to be here to ensure the add completes properly
-                            Thread.Sleep(1); 
+                            Thread.Sleep(10); 
                             break;
+
                         case SchedulingAlgorithms.RR:
                             RoundRobin robin = new RoundRobin(processList);
                             robin.Run();
                             kvPair.Value.Add(robin.GetAvgWait());
                             
                             // this sleep needs to be here to ensure the add completes properly
-                            Thread.Sleep(1); 
+                            Thread.Sleep(10); 
                             break;
+
                         default:
                             break;
                     }
@@ -248,12 +244,14 @@ namespace CPUSchedulingSim
             if (File.Exists(COMP_FILE))
                 File.Delete(COMP_FILE);
 
-            Console.WriteLine("Writing to file");
             using (StreamWriter stream = new StreamWriter(COMP_FILE))
             {
 
                 stream.WriteLine("Results of Scheduling Algorithm Comparisons");
                 stream.WriteLine($"Total interations: {runCount}\n");
+
+                Console.WriteLine("Results of Scheduling Algorithm Comparisons");
+                Console.WriteLine($"Total interations: {runCount}\n");
 
                 foreach (KeyValuePair<SchedulingAlgorithms, List<double>> kvPair in processDict)
                 {
@@ -265,6 +263,12 @@ namespace CPUSchedulingSim
                             stream.WriteLine($"Total Average Wait: {(kvPair.Value.Sum() / kvPair.Value.Count)}");
                             stream.WriteLine($"Highest Average Wait: {kvPair.Value.Max()}");
                             stream.WriteLine();
+                            
+                            Console.WriteLine("Results for First Come First Serve");
+                            Console.WriteLine($"Lowest Average Wait: {kvPair.Value.Min()}");
+                            Console.WriteLine($"Total Average Wait: {(kvPair.Value.Sum() / kvPair.Value.Count)}");
+                            Console.WriteLine($"Highest Average Wait: {kvPair.Value.Max()}");
+                            Console.WriteLine();
                             break;
                         case SchedulingAlgorithms.RR:
                             stream.WriteLine("Results for Round Robin");
@@ -272,6 +276,12 @@ namespace CPUSchedulingSim
                             stream.WriteLine($"Total Average Wait: {(kvPair.Value.Sum() / kvPair.Value.Count)}");
                             stream.WriteLine($"Highest Average Wait: {kvPair.Value.Max()}");
                             stream.WriteLine();
+
+                            Console.WriteLine("Results for Round Robin");
+                            Console.WriteLine($"Lowest Average Wait: {kvPair.Value.Min()}");
+                            Console.WriteLine($"Total Average Wait: {(kvPair.Value.Sum() / kvPair.Value.Count)}");
+                            Console.WriteLine($"Highest Average Wait: {kvPair.Value.Max()}");
+                            Console.WriteLine();
                             break;
                     }
                 }
