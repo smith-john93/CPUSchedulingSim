@@ -157,13 +157,13 @@ namespace CPUSchedulingSim
                 ProcessDTO process = new ProcessDTO();
                 process.ProcessId = i;
                 process.Priority = rand.Next(0, 5);
-                process.ArrivalTime = 0;
+                process.ArrivalTime = rand.Next(0, 5);
                 process.BurstTime = rand.Next(5, 25);
                 process.RemainingTime = process.BurstTime;
                 processList.Add(process);
             }
-
-            return processList;
+            var sortedList = processList.OrderBy(a => a.ArrivalTime);
+            return sortedList.ToList();
         }
         
         /// <summary>

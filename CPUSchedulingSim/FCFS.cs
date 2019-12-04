@@ -36,7 +36,7 @@ namespace CPUSchedulingSim
             foreach(ProcessDTO process in processList)
             {
                 //set the wait time of the process before being executed
-                process.WaitTime = TotalExec;
+                process.WaitTime = (TotalExec - process.ArrivalTime);
 
                 //Add to the total execution time if this is not the last process
                 TotalExec += process.BurstTime;
